@@ -29,7 +29,23 @@ function App() {
     }
   );
 
-  console.log(searchValue);
+  const completeTodos = (text) => {
+    const newTodos = [...todos]; //copiar todos en newTodos
+    const todoIndex = newTodos.findIndex(
+      (todo) => todo.text === text
+    );
+    newTodos[todoIndex].completed = true;
+    setTodos(newTodos);
+  }
+
+  const deleteTodos = (text) => {
+    const newTodos = [...todos]; 
+    const todoIndex = newTodos.findIndex(
+      (todo) => todo.text === text
+    );
+    newTodos.splice(todoIndex, 1); //borrar elemento de un array
+    setTodos(newTodos);
+  }
 
   return ( 
     <>
@@ -41,7 +57,10 @@ function App() {
          <TodoList>
         {searchedTodos.map(todo => (
           <TodoItem key={todo.text} text={todo.text} 
-          completed={todo.completed}/>
+          completed={todo.completed}
+          onComplete={() => completeTodos(todo.text)}
+          onDelete={() => deleteTodos(todo.text)}
+          />
         ))}
       </TodoList>
       <CreateTodoButton />
