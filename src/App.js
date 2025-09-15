@@ -3,7 +3,7 @@ import { TodoSearch } from './TodoSearch';
 import { TodoList } from './TodoList';
 import { TodoItem } from './TodoItem';
 import { CreateTodoButton } from './CreateTodoButton';
-import React from 'react';
+import React, { useState } from 'react';
 
 // const defaultTodos = [
 //   { text: 'Cortar cebolla', completed: true },
@@ -16,18 +16,28 @@ import React from 'react';
 // const stringifieldTodos = JSON.stringify(defaultTodos);
 // localStorage.setItem('TODOS_V1', stringifieldTodos);
 
+function useLocalStorage(itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName);
+  let parsedItem;
 
-function App() {
-  const localStorageTodos = localStorage.getItem('TODOS_V1');
-  let parsedTodos;
-
-  if (!localStorageTodos) {
-    localStorage.setItem('TODOS_V1', JSON.stringify([]));
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
   } else {
-    parsedTodos = JSON.parse(localStorageTodos);
+    parsedItem = JSON.parse(localStorageItem);
   }
 
-  const [todos, setTodos] = React.useState(parsedTodos);
+  const [item, setItem] = React.useState(parsedItem);
+
+  const saveItem = (newItem) => {
+    localStorage.setItem('TODOS_V1', JSON.stringify(newItem));
+    setItem(newItem);
+  };
+
+  return [item, saveItem];
+}
+
+function App() {
+  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
   const [searchValue, setSearchValue] = React.useState('');
 
   //Estados derivados
@@ -41,11 +51,6 @@ function App() {
       return todoText.includes(searchText);
     }
   );
-
-  const saveTodos = (newTodos) => {
-    localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
-    setTodos(newTodos);
-  };
 
   const completeTodos = (text) => {
     const newTodos = [...todos]; //copiar todos en newTodos
