@@ -6,28 +6,31 @@ import { TodoLoading } from '../TodosLoading';
 import { TodoError } from '../TodosError';
 import { EmptyTodos } from '../EmpyTodos';
 import { CreateTodoButton } from '../CreateTodoButton';
-import { TodoContext, TodoProvider } from '../TodoContext';
+import { TodoContext } from '../TodoContext';
+import { useContext } from 'react';
 
-function AppUI({ }) {
+function AppUI() {
+  const {
+    loading,
+    error,
+    searchedTodos,
+    completeTodos,
+    totalTodos,
+  } = useContext(TodoContext);
   return (
     <>
-
       <TodoCounter />
       <TodoSearch />
-
-      <TodoContext.Consumer>
-        {({
-          loading,
-          error,
-          searchedTodos,
-          completeTodos,
-          deleteTodos
-        }) => (
           <TodoList>
-            {loading &&
-              <><TodoLoading /> <TodoLoading /> <TodoLoading /></>}
+            {loading && (
+              <>
+                <TodoLoading />
+                <TodoLoading />
+                <TodoLoading />
+              </>
+            )}
             {error && <TodoError />}
-            {!loading && searchedTodos === 0 && <EmptyTodos />}
+            {(!loading && totalTodos === 0) && <EmptyTodos />}
 
             {searchedTodos.map(todo => (
               <TodoItem key={todo.text} text={todo.text}
@@ -37,8 +40,6 @@ function AppUI({ }) {
               />
             ))}
           </TodoList>
-        )}
-      </TodoContext.Consumer >
       <CreateTodoButton />
     </>
   );
