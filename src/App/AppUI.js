@@ -17,7 +17,8 @@ function AppUI() {
     searchedTodos,
     completeTodos,
     totalTodos,
-    openModal
+    openModal,
+    setOpenModal
   } = useContext(TodoContext);
   return (
     <>
@@ -42,7 +43,7 @@ function AppUI() {
           />
         ))}
       </TodoList>
-      <CreateTodoButton />
+      <CreateTodoButton setOpenModal={setOpenModal}/>
 
       {openModal && (
         <Modal>
