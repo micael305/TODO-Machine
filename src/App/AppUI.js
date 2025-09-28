@@ -6,9 +6,10 @@ import { TodoLoading } from '../TodosLoading';
 import { TodoError } from '../TodosError';
 import { EmptyTodos } from '../EmpyTodos';
 import { CreateTodoButton } from '../CreateTodoButton';
+import { TodoForm } from '../TodoForm';
 import { TodoContext } from '../TodoContext';
-import { Modal } from '../Modal'
 import { useContext } from 'react';
+import { Modal } from '../Modal'
 
 function AppUI() {
   const {
@@ -16,6 +17,7 @@ function AppUI() {
     error,
     searchedTodos,
     completeTodos,
+    deleteTodos,
     totalTodos,
     openModal,
     setOpenModal
@@ -39,7 +41,7 @@ function AppUI() {
           <TodoItem key={todo.text} text={todo.text}
             completed={todo.completed}
             onComplete={() => completeTodos(todo.text)}
-            onDelete={() => completeTodos(todo.text)}
+            onDelete={() => deleteTodos(todo.text)}
           />
         ))}
       </TodoList>
@@ -47,7 +49,7 @@ function AppUI() {
 
       {openModal && (
         <Modal>
-          Funcionalidad que agrega TODOs
+          <TodoForm/>
         </Modal>
       )}
 

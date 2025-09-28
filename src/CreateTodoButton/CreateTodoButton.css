@@ -15,7 +15,9 @@
   align-items: center;
   height: 64px;
   width: 64px;
-  z-index: 1;
+  z-index: 1; /* Para posicionar el button una capa por encima 
+  y que podamos seguir viendolo cuando se despliege la funcionalidad
+  de agregar un TODO*/
 
   transform: rotate(0);
   transition: .3s ease;

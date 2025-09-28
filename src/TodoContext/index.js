@@ -20,12 +20,23 @@ function TodoProvider({ children }) {
     }
   );
 
+  const addTodo = (text) => {
+    const newTodos = [...todos]; 
+    newTodos.push(
+      {
+        text, 
+        completed: false 
+      }
+    );
+    saveTodos(newTodos);
+  }
+
   const completeTodos = (text) => {
     const newTodos = [...todos]; //copiar todos en newTodos
     const todoIndex = newTodos.findIndex(
       (todo) => todo.text === text
     );
-    newTodos[todoIndex].completed = true;
+    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
     saveTodos(newTodos);
   }
 
@@ -37,6 +48,7 @@ function TodoProvider({ children }) {
     newTodos.splice(todoIndex, 1); //borrar elemento de un array
     saveTodos(newTodos);
   }
+
   return (
     <TodoContext.Provider value={{
       loading,
@@ -49,7 +61,8 @@ function TodoProvider({ children }) {
       completeTodos,
       deleteTodos,
       openModal,
-      setOpenModal
+      setOpenModal,
+      addTodo
     }}>
       {children}
     </TodoContext.Provider>
